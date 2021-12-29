@@ -1,0 +1,5 @@
+# Maze
+
+## License
+
+[MIT](./LICENSE)

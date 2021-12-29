@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="xJ5jU4" name="Maze" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+  <MAINGROUP id="kAZTYg" name="Maze">
+    <GROUP id="{FDA096E5-70F4-2E87-561F-E5B73128C9A0}" name="Source">
+      <FILE id="NoAwJS" name="algorithms.cpp" compile="1" resource="0" file="Source/algorithms.cpp"/>
+      <FILE id="Sgv3zv" name="algorithms.h" compile="0" resource="0" file="Source/algorithms.h"/>
+      <FILE id="eoBKxn" name="globals.h" compile="0" resource="0" file="Source/globals.h"/>
+      <FILE id="HXplNr" name="Map.cpp" compile="1" resource="0" file="Source/Map.cpp"/>
+      <FILE id="IU84bm" name="Map.h" compile="0" resource="0" file="Source/Map.h"/>
+      <FILE id="xCD7Sj" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="cP28bg" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="XBGYdP" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <EXPORTFORMATS>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Maze"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Maze"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+</JUCERPROJECT>
