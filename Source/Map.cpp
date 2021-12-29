@@ -41,6 +41,18 @@ void Map::loadFromFile(std::string name) {
     repaint();
 }
 
+void Map::saveToFile(std::string name) {
+    std::ofstream out(name);
+    auto n = getMapHeight(), m = getMapWidth();
+    out << n << " " << m << std::endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) out << matrix[i][j] << " ";
+        out << std::endl;
+    }
+    out.flush();
+    out.close();
+}
+
 int Map::getMapWidth() { return getWidth() / width; }
 int Map::getMapHeight() { return getHeight() / width; }
 

@@ -15,7 +15,9 @@ MainComponent::MainComponent() {
 
     ADD_BUTTON(startBtn, SUCCESS_COLOR, 126, map.setMode = 1; map.clearAnimate());
     ADD_BUTTON(endBtn, ERROR_COLOR, 120, map.setMode = 2; map.clearAnimate());
-    ADD_BUTTON(loadBtn, WARN_COLOR, 130, map.loadFromFile("./map.txt"));
+    ADD_BUTTON(loadBtn, WARN_COLOR, 60, map.loadFromFile("./map.txt"));
+    ADD_BUTTON(saveBtn, WARN_COLOR, 60, map.saveToFile("./map.txt");
+        juce::AlertWindow::showOkCancelBox(juce::AlertWindow::InfoIcon, "Maze:", "Saved!", "", "", nullptr, nullptr););
     ADD_BUTTON(generateBtn, WARN_COLOR, 100, map.generateMap());
     ADD_BUTTON(clearBtn, WARN_COLOR, 70, map.clear(); map.clearAnimate());
     ADD_BUTTON(bfsBtn, PRIMARY_COLOR, 50, map.startAnimate((new BFS(&map))->exec()));

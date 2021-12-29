@@ -13,7 +13,7 @@ public:
 private:
     Map map;
     juce::TextButton startBtn{ "SET START POINT" }, endBtn{ "SET END POINT" },
-        clearBtn{ "CLEAR" }, loadBtn{ "LOAD FROM FILE" }, generateBtn{ "GENERATE" }, stopBtn{ "STOP" },
+        clearBtn{ "CLEAR" }, loadBtn{ "LOAD" }, saveBtn{ "SAVE" }, generateBtn{ "GENERATE" }, stopBtn{ "STOP" },
         bfsBtn{ "BFS" }, dfsBtn{ "DFS" }, aStarBtn{ "A*" }, gameModeBtn{ "GAME MODE" }, githubBtn{ "GITHUB" };
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

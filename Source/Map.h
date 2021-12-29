@@ -14,6 +14,7 @@ public:
     void mouseDown(const juce::MouseEvent& event) override;
     void mouseDrag(const juce::MouseEvent& event) override;
     void loadFromFile(std::string name);
+    void saveToFile(std::string name);
     void clear();
     void clearAnimate();
     void stopAnimate();
