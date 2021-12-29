@@ -63,8 +63,7 @@ public:
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (juce::ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons) {
-            setUsingNativeTitleBar (true);
-            juce::LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName("Microsoft YaHei UI");
+            setUsingNativeTitleBar(true);
             setContentOwned(new MainComponent(), true);
 
            #if JUCE_IOS || JUCE_ANDROID
@@ -72,7 +71,7 @@ public:
            #else
             setResizable(true, true);
             centreWithSize(getWidth(), getHeight());
-            setResizeLimits(16 * 50, 16 * 30, 0x3fffffff, 0x3fffffff);
+            setResizeLimits(getWidth(), getHeight(), 0x3fffffff, 0x3fffffff);
            #endif
             setVisible(true);
         }
