@@ -15,7 +15,7 @@ juce::Colour BORDER_COLOR = juce::Colour::fromRGB(210, 210, 210);
 Map::Map() {
     memset(matrix, 0, sizeof(matrix));
     clearAnimate();
-    startTimerHz(20);
+    startTimerHz(60);
 }
 
 Map::~Map() { }
@@ -79,6 +79,9 @@ void Map::paint(juce::Graphics& g) {
             break;
         case 3:
             g.setColour(ERROR_COLOR);
+            break;
+        case 4:
+            g.setColour(WARN_COLOR);
             break;
         }
         g.fillRect(j * width, i * width, width, width);
@@ -175,4 +178,40 @@ void Map::startAnimate(AlgorithmResult* result) {
     curAnimateX = -1;
     curAnimateY = -1;
     animate = result;
+}
+
+void Map::generateMap() {
+    memset(matrix, 0, sizeof(matrix));
+    clearAnimate();
+    srand((unsigned) time(NULL));
+    int n = getMapHeight(), m = getMapWidth();
+    for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) matrix[i][j] = 1;
+    std::vector<std::tuple<int, int, int>> walls;
+    walls.emplace_back(std::make_tuple(1, 0, 1));
+    walls.emplace_back(std::make_tuple(0, 1, 2));
+    int x, y, dir;
+    while (!walls.empty()) {
+        int randWall = rand() % walls.size();
+        std::tie(x, y, dir) = walls[randWall];
+        int nextX = x, nextY = y;
+        switch (dir) {
+        case 0: nextY--; break;
+        case 1: nextX++; break;
+        case 2: nextY++; break;
+        case 3: nextX--;
+        }
+        if (matrix[nextY][nextX] == 1) {
+            matrix[y][x] = matrix[nextY][nextX] = 0;
+            if (nextY >= 2 && matrix[nextY - 1][nextX] == 1) walls.emplace_back(std::make_tuple(nextX, nextY - 1, 0));
+            if (nextX + 1 < m && matrix[nextY][nextX + 1] == 1) walls.emplace_back(std::make_tuple(nextX + 1, nextY, 1));
+            if (nextY + 1 < n && matrix[nextY + 1][nextX] == 1) walls.emplace_back(std::make_tuple(nextX, nextY + 1, 2));
+            if (nextX >= 2 && matrix[nextY][nextX - 1] == 1) walls.emplace_back(std::make_tuple(nextX - 1, nextY, 3));
+        }
+        walls.erase(walls.begin() + randWall);
+    }
+    do {
+        matrix[startY = rand() % n][startX = rand() % m] = 2;
+        matrix[endY = rand() % n][endX = rand() % m] = 3;
+    } while (startY == endY && startX == endX);
+    repaint();
 }

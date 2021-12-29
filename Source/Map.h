@@ -20,6 +20,7 @@ public:
     bool isAnimating();
     int getMapWidth();
     int getMapHeight();
+    void generateMap();
 
     int setMode = 0;
     int startX = 0, startY = 0, endX = 0, endY = 0;
