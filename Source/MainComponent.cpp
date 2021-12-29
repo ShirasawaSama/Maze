@@ -11,7 +11,7 @@ int __btnLeft = 0;
     btn.onClick = [this] { if (map.isAnimating()) map.stopAnimate(); if (map.gameMode) map.grabKeyboardFocus(); cb; };
 
 MainComponent::MainComponent() {
-    setSize(16 * 56, 16 * 40);
+    setSize(16 * 62, 16 * 40);
 
     ADD_BUTTON(startBtn, SUCCESS_COLOR, 126, map.setMode = 1; map.clearAnimate());
     ADD_BUTTON(endBtn, ERROR_COLOR, 120, map.setMode = 2; map.clearAnimate());
@@ -22,6 +22,7 @@ MainComponent::MainComponent() {
     ADD_BUTTON(dfsBtn, PRIMARY_COLOR, 50, map.startAnimate((new DFS(&map))->exec()));
     ADD_BUTTON(aStarBtn, PRIMARY_COLOR, 50, map.startAnimate((new AStar(&map))->exec()));
     ADD_BUTTON(gameModeBtn, SECONDARY_COLOR, 100, map.switchGameMode());
+    ADD_BUTTON(githubBtn, SECONDARY_COLOR, 80, juce::URL("https://github.com/ShirasawaSama/Maze").launchInDefaultBrowser());
 
     map.setTopLeftPosition(0, 80);
     map.setSize(getWidth(), getHeight() - 80);

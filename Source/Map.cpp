@@ -224,7 +224,8 @@ void Map::generateMap() {
 }
 
 void Map::switchGameMode() {
-    if (gameMode = !gameMode) {
+    gameMode = !gameMode;
+    if (gameMode) {
         grabKeyboardFocus();
         getParentComponent()->getParentComponent()->setName("Maze (Game Mode, Steps: 0)");
         juce::AlertWindow::showOkCancelBox(juce::AlertWindow::InfoIcon, "Maze:", "Game Start!", "", "", nullptr, nullptr);
