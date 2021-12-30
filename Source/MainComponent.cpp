@@ -18,7 +18,7 @@ MainComponent::MainComponent() {
     ADD_BUTTON(loadBtn, WARN_COLOR, 60, map.loadFromFile("./map.txt"));
     ADD_BUTTON(saveBtn, WARN_COLOR, 60, map.saveToFile("./map.txt");
         juce::AlertWindow::showOkCancelBox(juce::AlertWindow::InfoIcon, "Maze:", "Saved!", "", "", nullptr, nullptr););
-    ADD_BUTTON(generateBtn, WARN_COLOR, 100, map.generateMap());
+    ADD_BUTTON(generateBtn, WARN_COLOR, 100, map.fastGenerate = !isShiftDown; map.generateMap());
     ADD_BUTTON(clearBtn, WARN_COLOR, 70, map.clear(); map.clearAnimate());
     ADD_BUTTON(bfsBtn, PRIMARY_COLOR, 50, map.startAnimate((new BFS(&map))->exec()));
     ADD_BUTTON(dfsBtn, PRIMARY_COLOR, 50, map.startAnimate((new DFS(&map))->exec()));
@@ -41,4 +41,8 @@ void MainComponent::paint(juce::Graphics& g) {
 
 void MainComponent::resized() {
     map.setSize(getWidth(), getHeight() - 80);
+}
+
+void MainComponent::modifierKeysChanged(const juce::ModifierKeys& modifiers) {
+    isShiftDown = modifiers.isShiftDown();
 }

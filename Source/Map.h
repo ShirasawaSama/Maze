@@ -26,7 +26,7 @@ public:
     void generateMap();
     void switchGameMode();
 
-    bool gameMode = false;
+    bool fastGenerate = true, gameMode = false;
     int setMode = 0;
     int startX = 0, startY = 0, endX = 1, endY = 1;
     int matrix[MAP_SIZE][MAP_SIZE];
@@ -34,5 +34,6 @@ private:
     int prevX = -1, prevY = -1, curAnimateX = -1, curAnimateY = -1, animateId = 0, steps = 0;
     int animateMatrix[MAP_SIZE][MAP_SIZE];
     AlgorithmResult* animate = nullptr;
+    std::vector<std::tuple<int, int, int>> walls;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Map)
 };

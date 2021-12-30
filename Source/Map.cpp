@@ -28,7 +28,7 @@ void Map::loadFromFile(std::string name) {
     memset(matrix, 0, sizeof(matrix));
     std::ifstream in(name);
     auto n = 0, m = 0;
-    if (n < 300 && m < 300) {
+    if (n < MAP_SIZE && m < MAP_SIZE && n > 0 && m > 0) {
         in >> n >> m;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) in >> matrix[i][j];
@@ -109,6 +109,7 @@ void Map::paint(juce::Graphics& g) {
 void Map::mouseDown(const juce::MouseEvent& e) {
     if (gameMode) return;
     int y = e.y / width, x = e.x / width;
+    if (y < 0 || x < 0 || y >= MAP_SIZE || x >= MAP_SIZE) return;
     prevX = x;
     prevY = y;
     switch (setMode) {
@@ -137,7 +138,7 @@ void Map::mouseDown(const juce::MouseEvent& e) {
 void Map::mouseDrag(const juce::MouseEvent& e) {
     if (gameMode || setMode != 0) return;
     int y = e.y / width, x = e.x / width;
-    if (prevX == x && prevY == y) return;
+    if ((prevX == x && prevY == y) || y < 0 || x < 0 || y >= MAP_SIZE || x >= MAP_SIZE) return;
     prevX = x;
     prevY = y;
     if (matrix[y][x] > 1) return;
@@ -154,7 +155,7 @@ void Map::clear() {
 
 void Map::clearAnimate() { memset(animateMatrix, 0, sizeof(animateMatrix)); }
 
-bool Map::isAnimating() { return animate != nullptr; }
+bool Map::isAnimating() { return animate != nullptr || !walls.empty(); }
 
 void Map::resized() {
     stopAnimate();
@@ -162,6 +163,37 @@ void Map::resized() {
 }
 
 void Map::timerCallback() {
+    if (!walls.empty()) {
+        int x, y, dir;
+        bool flag = true;
+        int n = getMapHeight(), m = getMapWidth();
+        while (flag && !walls.empty()) {
+            int randWall = rand() % walls.size();
+            std::tie(x, y, dir) = walls[randWall];
+            int nextX = x, nextY = y;
+            switch (dir) {
+            case 0: nextY--; break;
+            case 1: nextX++; break;
+            case 2: nextY++; break;
+            case 3: nextX--;
+            }
+            if (matrix[nextY][nextX] == 1) {
+                matrix[y][x] = matrix[nextY][nextX] = 0;
+                if (nextY >= 2 && matrix[nextY - 1][nextX] == 1) walls.emplace_back(std::make_tuple(nextX, nextY - 1, 0));
+                if (nextX + 1 < m && matrix[nextY][nextX + 1] == 1) walls.emplace_back(std::make_tuple(nextX + 1, nextY, 1));
+                if (nextY + 1 < n && matrix[nextY + 1][nextX] == 1) walls.emplace_back(std::make_tuple(nextX, nextY + 1, 2));
+                if (nextX >= 2 && matrix[nextY][nextX - 1] == 1) walls.emplace_back(std::make_tuple(nextX - 1, nextY, 3));
+                flag = fastGenerate;
+            }
+            walls.erase(walls.begin() + randWall);
+        }
+        if (walls.empty()) do {
+            matrix[startY = rand() % n][startX = rand() % m] = 2;
+            matrix[endY = rand() % n][endX = rand() % m] = 3;
+        } while (startY == endY && startX == endX);
+        repaint();
+        return;
+    }
     if (animate == nullptr) return;
     if (animate->order.empty()) {
         if (curAnimateX == -1) {
@@ -173,8 +205,12 @@ void Map::timerCallback() {
             stopAnimate();
             return;
         } else {
-            int x, y, preX, preY;
+            int x, y;
             std::tie(x, y, curAnimateX, curAnimateY) = animate->vis[curAnimateY][curAnimateX];
+            if (x == curAnimateX && y == curAnimateY) {
+                stopAnimate();
+                return;
+            }
             animateMatrix[y][x] = ++animateId;
         }
     } else {
@@ -205,34 +241,8 @@ void Map::generateMap() {
     srand((unsigned) time(NULL));
     int n = getMapHeight(), m = getMapWidth();
     for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) matrix[i][j] = 1;
-    std::vector<std::tuple<int, int, int>> walls;
     walls.emplace_back(std::make_tuple(1, 0, 1));
     walls.emplace_back(std::make_tuple(0, 1, 2));
-    int x, y, dir;
-    while (!walls.empty()) {
-        int randWall = rand() % walls.size();
-        std::tie(x, y, dir) = walls[randWall];
-        int nextX = x, nextY = y;
-        switch (dir) {
-        case 0: nextY--; break;
-        case 1: nextX++; break;
-        case 2: nextY++; break;
-        case 3: nextX--;
-        }
-        if (matrix[nextY][nextX] == 1) {
-            matrix[y][x] = matrix[nextY][nextX] = 0;
-            if (nextY >= 2 && matrix[nextY - 1][nextX] == 1) walls.emplace_back(std::make_tuple(nextX, nextY - 1, 0));
-            if (nextX + 1 < m && matrix[nextY][nextX + 1] == 1) walls.emplace_back(std::make_tuple(nextX + 1, nextY, 1));
-            if (nextY + 1 < n && matrix[nextY + 1][nextX] == 1) walls.emplace_back(std::make_tuple(nextX, nextY + 1, 2));
-            if (nextX >= 2 && matrix[nextY][nextX - 1] == 1) walls.emplace_back(std::make_tuple(nextX - 1, nextY, 3));
-        }
-        walls.erase(walls.begin() + randWall);
-    }
-    do {
-        matrix[startY = rand() % n][startX = rand() % m] = 2;
-        matrix[endY = rand() % n][endX = rand() % m] = 3;
-    } while (startY == endY && startX == endX);
-    repaint();
 }
 
 void Map::switchGameMode() {
