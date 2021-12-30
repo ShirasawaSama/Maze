@@ -26,10 +26,11 @@ Map::~Map() { }
 
 void Map::loadFromFile(std::string name) {
     memset(matrix, 0, sizeof(matrix));
+    clearAnimate();
     std::ifstream in(name);
     auto n = 0, m = 0;
+    in >> n >> m;
     if (n < MAP_SIZE && m < MAP_SIZE && n > 0 && m > 0) {
-        in >> n >> m;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) in >> matrix[i][j];
             matrix[i][m] = 1;
@@ -241,6 +242,7 @@ void Map::generateMap() {
     srand((unsigned) time(NULL));
     int n = getMapHeight(), m = getMapWidth();
     for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) matrix[i][j] = 1;
+    matrix[0][0] = 0;
     walls.emplace_back(std::make_tuple(1, 0, 1));
     walls.emplace_back(std::make_tuple(0, 1, 2));
 }

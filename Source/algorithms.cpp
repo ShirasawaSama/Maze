@@ -100,7 +100,7 @@ AlgorithmResult* AStar::exec() {
     bool vis[MAP_SIZE][MAP_SIZE];
     memset(vis, 0, sizeof(vis));
     auto result = new AlgorithmResult();
-    vis[map->startY][map->startY] = true;
+    vis[map->startY][map->startX] = true;
     while (!q.empty()) {
         auto cur = q.top();
         int x, y, preX, preY;
