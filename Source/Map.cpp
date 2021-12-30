@@ -54,8 +54,8 @@ void Map::saveToFile(std::string name) {
     out.close();
 }
 
-int Map::getMapWidth() { return getWidth() / width; }
-int Map::getMapHeight() { return getHeight() / width; }
+int Map::getMapWidth() { return std::min(getWidth() / width, MAP_SIZE); }
+int Map::getMapHeight() { return std::min(getHeight() / width, MAP_SIZE); }
 
 void Map::syncPoi() {
     for (int i = 0; i < MAP_SIZE; i++) for (int j = 0; j < MAP_SIZE; j++) {
